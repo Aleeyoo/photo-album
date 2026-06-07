@@ -1,15 +1,9 @@
 # Cloudflare Pages configuration
 # https://developers.cloudflare.com/pages/framework-guides/deploy-anything/
 
-compatibility_date = "2025-06-07"
-
 name = "photo-album"
-
-[pages]
-build.command = "npm run build"
-build.output = "dist"
 compatibility_date = "2025-06-07"
+pages_build_output_dir = "dist"
 
-[[pages.functions]]
-binding = "API_BASE_URL"
-value = ""
+[vars]
+API_BASE_URL = ""
