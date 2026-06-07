@@ -41,6 +41,3 @@ openspec/
 tsconfig.json
 vite.config.ts
 wrangler.toml
-
-# Assets
-assets/
