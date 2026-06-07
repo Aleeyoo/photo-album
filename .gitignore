@@ -1,17 +1,39 @@
+# Dependencies
 node_modules/
-bookmarks-data.json
-folders-data.json
+
+# Environment
 .env
 .env.local
+.env.*.local
+
+# macOS
 .DS_Store
-.claude/
-lucas-centered-animation/
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
 
 # Build output
 dist/
 
-# Legacy files
-_legacy/
+# Wrangler local state
+.wrangler/
 
 # Local tool data
 .codegraph/
+.claude/
+
+# Project specific
+bookmarks-data.json
+folders-data.json
+lucas-centered-animation/
+
+# Legacy files
+_legacy/
+
+# Planning docs (not part of the project)
+openspec/
