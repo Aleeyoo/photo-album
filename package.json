@@ -1,0 +1,18 @@
+{
+  "name": "photo-album",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "motion": "^12.38.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.0",
+    "typescript": "^5.8.0"
+  }
+}

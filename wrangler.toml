@@ -1,0 +1,16 @@
+# Cloudflare Pages configuration
+# https://developers.cloudflare.com/pages/framework-guides/deploy-anything/
+
+compatibility_date = "2025-06-07"
+
+[pages]
+build.command = "npm run build"
+build.output = "dist"
+
+[[pages.functions]]
+binding = "API_BASE_URL"
+value = "https://tg-api.aleeyoo.workers.dev"
+
+[[pages.functions]]
+binding = "CHANNEL"
+value = "jinjinleedao"
