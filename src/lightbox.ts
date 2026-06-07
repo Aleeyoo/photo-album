@@ -1,5 +1,5 @@
 import { animate } from "motion";
-import type { MediaItem } from "./types";
+import type { MediaItem, TextBlock, ReplyBlock, LinkPreviewBlock } from "./types";
 
 const DRAG_THRESHOLD = 5;
 
@@ -56,6 +56,58 @@ function formatDate(iso: string): string {
     month: "short",
     day: "numeric",
   });
+}
+
+function buildContentBlocks(media: MediaItem): DocumentFragment | null {
+  const post = media.post;
+  if (!post?.blocks) return null;
+
+  const frag = document.createDocumentFragment();
+  const textBlocks: TextBlock[] = [];
+  let replyBlock: ReplyBlock | null = null;
+  let linkBlock: LinkPreviewBlock | null = null;
+
+  for (const block of post.blocks) {
+    if (block.type === "text") textBlocks.push(block as TextBlock);
+    else if (block.type === "reply" && !replyBlock) replyBlock = block as ReplyBlock;
+    else if (block.type === "link_preview" && !linkBlock) linkBlock = block as LinkPreviewBlock;
+  }
+
+  // Reply block (shown first)
+  if (replyBlock) {
+    const replyEl = document.createElement("div");
+    replyEl.className = "lightbox-reply-block";
+    replyEl.innerHTML = `<div class="reply-label">Replying to</div>${escapeHtml(replyBlock.text)}`;
+    frag.appendChild(replyEl);
+  }
+
+  // Text blocks (max 3)
+  const displayTexts = textBlocks.slice(0, 3);
+  for (const tb of displayTexts) {
+    const textEl = document.createElement("div");
+    textEl.className = "lightbox-text-block";
+    textEl.innerHTML = tb.html;
+    frag.appendChild(textEl);
+  }
+
+  // Link preview card
+  if (linkBlock) {
+    const linkEl = document.createElement("a");
+    linkEl.className = "lightbox-link-preview-card";
+    linkEl.href = linkBlock.url;
+    linkEl.target = "_blank";
+    linkEl.rel = "noopener";
+    linkEl.innerHTML = `<div class="lp-site">${escapeHtml(linkBlock.siteName)}</div><div class="lp-title">${escapeHtml(linkBlock.title)}</div>${linkBlock.description ? `<div class="lp-desc">${escapeHtml(linkBlock.description)}</div>` : ""}`;
+    frag.appendChild(linkEl);
+  }
+
+  return frag.childNodes.length > 0 ? frag : null;
+}
+
+function escapeHtml(s: string): string {
+  const div = document.createElement("div");
+  div.textContent = s;
+  return div.innerHTML;
 }
 
 export function openLightbox(
@@ -139,16 +191,32 @@ export function openLightbox(
   const overlay = document.getElementById("lightbox-overlay");
   overlay?.classList.add("active");
 
+  // Build content blocks from post
+  const contentEl = buildContentBlocks(media);
+
   // Update info panel
   const titleEl = document.getElementById("lightbox-title");
   const linkEl = document.getElementById("lightbox-link") as HTMLAnchorElement | null;
   const infoEl = document.getElementById("lightbox-info");
 
+  // Insert content blocks before title in the info panel
+  const contentContainer = infoEl?.querySelector(".lightbox-content-blocks");
+  if (contentContainer) {
+    contentContainer.innerHTML = "";
+    if (contentEl) contentContainer.appendChild(contentEl);
+  }
+
   if (titleEl) {
-    titleEl.textContent =
-      media.title.length > 120
-        ? media.title.substring(0, 120) + "…"
-        : media.title;
+    if (contentEl) {
+      // Text blocks already show content; hide title to avoid duplication
+      titleEl.style.display = "none";
+    } else {
+      titleEl.style.display = "";
+      titleEl.textContent =
+        media.title.length > 120
+          ? media.title.substring(0, 120) + "…"
+          : media.title;
+    }
   }
   if (linkEl) {
     const postUrl = `https://t.me/s/${channel}/${media.postId}`;

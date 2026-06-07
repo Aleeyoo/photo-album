@@ -14,10 +14,12 @@ export async function fetchConfig(): Promise<Config> {
 
 export async function fetchPosts(
   apiBaseUrl: string,
-  channel: string
+  channel: string,
+  before?: string
 ): Promise<{ posts: any[] }> {
   const path = `/api/v1/ch/${channel}/posts`;
-  const url = apiBaseUrl ? `${apiBaseUrl}${path}` : path;
+  const params = before ? `?before=${before}` : "";
+  const url = apiBaseUrl ? `${apiBaseUrl}${path}${params}` : `${path}${params}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`API fetch failed: ${res.status}`);
   return res.json();
@@ -26,6 +28,19 @@ export async function fetchPosts(
 export interface NormalizedResult {
   items: import("./types").MediaItem[];
   tags: string[];
+}
+
+function resolveSrc(block: any): string {
+  return block.src;
+}
+
+function resolvePoster(block: any): string | undefined {
+  if (!block.poster) return undefined;
+  // poster is a proxy path like "/static/https://cdn5.telesco.pe/file/xxx.jpg"
+  // extract the real CDN URL after "/static/"
+  const idx = block.poster.indexOf("/static/");
+  if (idx !== -1) return block.poster.slice(idx + 8);
+  return block.poster;
 }
 
 export function normalizePosts(
@@ -39,7 +54,8 @@ export function normalizePosts(
 
     for (const block of post.blocks ?? []) {
       if (block.type === "image" || block.type === "video") {
-        const src = block.src;
+        const src = resolveSrc(block);
+        const poster = resolvePoster(block);
 
         items.push({
           type: block.type,
@@ -52,6 +68,8 @@ export function normalizePosts(
           postId: post.id,
           blockId: block.id,
           isRound: block.isRound ?? false,
+          poster,
+          post,
         });
       }
     }

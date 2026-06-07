@@ -1,70 +1,45 @@
-# Photo Album
+# 相册
 
-An infinite pannable masonry grid for Telegram channel media. Browse photos and videos visually, with tag-based filtering.
+一个无限平移的瀑布流相册，用于浏览 Telegram 频道的图片和视频，支持标签筛选。
 
-## Setup
-
-Requires Node.js 20+.
+## 快速开始
 
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-Open http://localhost:3000
+打开 http://localhost:3000
 
-### Configuration
+## 配置
 
-Create a `.env` file (see `.env.example`):
+创建 `.env` 文件（参考 `.env.example`）：
 
 ```
-VITE_API_URL=https://tg-api.aleeyoo.workers.dev
-VITE_CHANNEL=leeyoooo
+VITE_API_URL=https://your-api.workers.dev
+VITE_CHANNEL=channel-name
 ```
 
-Without `.env`, the app defaults to these values.
-
-## Deploy to Cloudflare Pages
+## 部署
 
 ```bash
-# Install Wrangler
-npm install -g wrangler
-
-# Build
 npm run build
-
-# Deploy
 wrangler pages deploy dist/
-
-# Set environment variables in Cloudflare dashboard:
-# API_BASE_URL = https://tg-api.aleeyoo.workers.dev
-# CHANNEL = leeyoooo
 ```
 
-### Runtime Configuration
+在 Cloudflare Pages 仪表板中设置 `API_BASE_URL` 和 `CHANNEL` 环境变量，无需重新构建。
 
-`API_BASE_URL` and `CHANNEL` are set in the Cloudflare Pages dashboard environment variables — no rebuild needed when changing channels.
+## 工作原理
 
-## How it works
+- 纯数据计算瀑布流布局，约 500 个 DOM 元素循环使用 — 平滑无限平移
+- Lightbox 使用 Motion One 弹性动画，打开时加载完整图片/视频
+- 右上角标签下拉筛选，数据来自 API
 
-- Masonry positions are computed as pure data, then a fixed pool of ~500 DOM elements is recycled as you pan.
-- Lightbox clones the clicked element, animates it to center with [Motion One](https://motion.dev/) springs, and loads the full image/video on top.
-- Tag filtering uses the `tags` endpoint — dropdown pill in the top-right lets you filter by tag.
+## 依赖
 
-## API Format
+- [Motion One](https://motion.dev/) — lightbox 动画
+- [Vite](https://vitejs.dev/) — 构建工具
 
-Consumes [tg-api](https://github.com/aleeyoo/tele2web) endpoints:
-
-| Endpoint | Description |
-|---|---|
-| `GET /api/v1/ch/{channel}/media/images` | Flattened image items |
-| `GET /api/v1/ch/{channel}/media/videos` | Flattened video items |
-| `GET /api/v1/ch/{channel}/tags` | Tag counts |
-| `GET /api/v1/ch/{channel}/posts/{id}` | Single post detail |
-
-## License
+## 许可
 
 MIT

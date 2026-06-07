@@ -166,11 +166,31 @@ async function init() {
     channel = config.channel;
     console.log(`Config: api="${config.apiBaseUrl}", channel=${config.channel}`);
 
-    const raw = await fetchPosts(config.apiBaseUrl, config.channel);
-    const { items, tags } = normalizePosts(raw);
+    // Load all posts with cursor pagination
+    grid.innerHTML = `<div class="loading-indicator">Loading...</div>`;
+    const allPosts: any[] = [];
+    const seenIds = new Set<string>();
+    let cursor: string | undefined;
+
+    while (true) {
+      const raw = await fetchPosts(config.apiBaseUrl, config.channel, cursor);
+      const posts = raw.posts ?? [];
+      if (posts.length === 0) break;
+
+      for (const post of posts) {
+        if (!seenIds.has(post.id)) {
+          seenIds.add(post.id);
+          allPosts.push(post);
+        }
+      }
+
+      cursor = posts[posts.length - 1].id;
+    }
+
+    const { items, tags } = normalizePosts({ posts: allPosts });
     allItems = items;
 
-    console.log(`Loaded ${items.length} media items, ${tags.length} tags`);
+    console.log(`Loaded ${items.length} media items from ${allPosts.length} posts, ${tags.length} tags`);
 
     buildMasonryLayout(items);
     createPool(grid);

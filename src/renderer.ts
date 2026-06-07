@@ -78,8 +78,11 @@ export function renderVisibleItems(view: ViewState) {
           const media = item.media;
 
           if (media.type === "video") {
-            // Video card: dark placeholder + play icon overlay
-            el.innerHTML = `<div class="video-placeholder"></div>`;
+            if (media.poster) {
+              el.innerHTML = `<img src="${media.poster}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('grid-item-video-fallback')">`;
+            } else {
+              el.innerHTML = `<div class="video-placeholder"></div>`;
+            }
             el.classList.add("grid-item-video");
           } else {
             // Image card
@@ -92,6 +95,13 @@ export function renderVisibleItems(view: ViewState) {
             } else {
               el.innerHTML = `<img src="${media.src}" alt="${media.title.substring(0, 60)}" loading="lazy" decoding="async">`;
             }
+          }
+
+          // Round video cards
+          if (media.isRound) {
+            el.classList.add("grid-item-round");
+          } else {
+            el.classList.remove("grid-item-round");
           }
 
           el.style.width = `${item.w}px`;

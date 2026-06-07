@@ -43,6 +43,7 @@ export interface VideoBlock {
   width: number;
   height: number;
   isRound: boolean;
+  poster?: string;
 }
 
 export interface ReplyBlock {
@@ -72,4 +73,6 @@ export interface MediaItem {
   postId: string;
   blockId: string;
   isRound: boolean;
+  poster?: string;
+  post?: Post;
 }
