@@ -19,12 +19,6 @@ https://photo.aleeyoo.com
 
 ## 部署
 
-### 一键部署
-
-[![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Aleeyoo/photo-album)
-
-点击上方按钮，按提示操作即可完成部署。
-
 ### CLI 部署
 
 ```bash
