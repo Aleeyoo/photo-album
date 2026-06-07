@@ -11,6 +11,14 @@ npm install
 npm run dev
 ```
 
+## 构建
+
+```bash
+npm run build
+```
+
+构建后静态文件输出到 `dist/` 目录，可直接部署到任何静态托管服务。
+
 ## 一键部署到 Cloudflare Pages
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Aleeyoo/photo-album)
@@ -19,9 +27,9 @@ npm run dev
 
 部署后需在 Cloudflare 项目仪表板中设置环境变量：
 
-| 变量 | 说明 | 默认值 |
-|---|---|---|
-| `API_BASE_URL` | tg-api 地址 | https://your-api.workers.dev |
+| 变量 | 说明 |
+|---|---|
+| `API_BASE_URL` | tg-api 地址 |
 
 无需重新构建，修改后刷新即生效。
 
@@ -29,11 +37,11 @@ npm run dev
 
 ```bash
 npm run build
-# 安装 Wrangler CLI
 npm install -g wrangler
-# 部署到 Cloudflare Pages
 wrangler pages deploy dist/
 ```
+
+部署产物为 `dist/` 目录下的静态文件：`index.html` + CSS + JS。
 
 ## 工作原理
 
