@@ -1,8 +1,0 @@
-# Cloudflare Pages configuration
-# https://developers.cloudflare.com/pages/framework-guides/deploy-anything/
-
-compatibility_date = "2025-06-07"
-
-[pages]
-build.command = "npm run build"
-build.output = "dist"

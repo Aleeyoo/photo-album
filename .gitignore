@@ -1,10 +1,11 @@
 # Dependencies
 node_modules/
+package-lock.json
 
 # Environment
 .env
-.env.local
-.env.*.local
+.env.*
+.env.example
 
 # macOS
 .DS_Store
@@ -31,9 +32,15 @@ dist/
 bookmarks-data.json
 folders-data.json
 lucas-centered-animation/
-
-# Legacy files
 _legacy/
 
-# Planning docs (not part of the project)
+# Planning docs
 openspec/
+
+# Build & deploy config
+tsconfig.json
+vite.config.ts
+wrangler.toml
+
+# Assets
+assets/
