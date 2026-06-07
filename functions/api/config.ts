@@ -1,15 +1,10 @@
-import type { Config } from "./types";
-
-// Cloudflare Pages Function — returns runtime config from env vars
+// Cloudflare Pages Function — returns API base URL from env var
+// Allows changing the backend URL in Cloudflare dashboard without rebuild
 export async function onRequest(context: {
-  env: { API_BASE_URL?: string; CHANNEL?: string };
+  env: { API_BASE_URL?: string };
 }): Promise<Response> {
-  const config: Config = {
-    apiBaseUrl: context.env.API_BASE_URL ?? "https://tg-api.aleeyoo.workers.dev",
-    channel: context.env.CHANNEL ?? "jinjinleedao",
-  };
-
-  return new Response(JSON.stringify(config), {
+  const apiBaseUrl = context.env.API_BASE_URL ?? "https://tg-api.aleeyoo.workers.dev";
+  return new Response(JSON.stringify({ apiBaseUrl }), {
     headers: { "content-type": "application/json" },
   });
 }

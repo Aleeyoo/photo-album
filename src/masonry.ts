@@ -1,9 +1,16 @@
 import type { MediaItem } from "./types";
 
 export const GAP = 18;
-export const COLS = 5;
 export const POOL_SIZE = 500;
 export const BUFFER = 600;
+
+export function getCols(): number {
+  const vw = window.innerWidth;
+  if (vw < 480) return 2;
+  if (vw < 768) return 3;
+  if (vw < 1024) return 4;
+  return 5;
+}
 
 export interface LayoutItem {
   key: string;
@@ -23,9 +30,10 @@ export function buildMasonryLayout(items: MediaItem[]) {
   const vw = window.innerWidth;
   const gap = GAP;
 
-  colWidth = Math.floor((vw - gap) / COLS);
+  const maxCols = getCols();
+  colWidth = Math.floor((vw - gap) / maxCols);
   // Dynamic columns: fewer items = fewer columns, centered
-  const actualCols = Math.min(items.length || 1, COLS);
+  const actualCols = Math.min(items.length || 1, maxCols);
   totalWidth = colWidth * actualCols;
   const offsetX = (vw - totalWidth) / 2;
 
