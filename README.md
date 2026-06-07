@@ -4,21 +4,6 @@
 
 基于 [twitter-bookmarks-grid](https://github.com/destefanis/twitter-bookmarks-grid) 的前端渲染方案重写，配合 [tg-api](https://github.com/Aleeyoo/tg-api) 后端使用。
 
-## 快速开始
-
-```bash
-npm install
-npm run dev
-```
-
-## 构建
-
-```bash
-npm run build
-```
-
-构建后静态文件输出到 `dist/` 目录，可直接部署到任何静态托管服务。
-
 ## 一键部署到 Cloudflare Pages
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Aleeyoo/photo-album)
@@ -33,15 +18,20 @@ npm run build
 
 无需重新构建，修改后刷新即生效。
 
-### 手动部署
+## 快速开始
+
+```bash
+npm install
+npm run dev
+```
+
+## 构建
 
 ```bash
 npm run build
-npm install -g wrangler
-wrangler pages deploy dist/
 ```
 
-部署产物为 `dist/` 目录下的静态文件：`index.html` + CSS + JS。
+构建后静态文件输出到 `dist/` 目录，可直接部署到任何静态托管服务。
 
 ## 工作原理
 

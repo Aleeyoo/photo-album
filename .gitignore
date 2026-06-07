@@ -40,4 +40,3 @@ openspec/
 # Build & deploy config
 tsconfig.json
 vite.config.ts
-wrangler.toml
