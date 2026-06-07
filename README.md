@@ -2,6 +2,8 @@
 
 一个无限平移的瀑布流相册，用于浏览 Telegram 频道的图片和视频，支持标签筛选。
 
+基于 [twitter-bookmarks-grid](https://github.com/destefanis/twitter-bookmarks-grid) 的前端渲染方案重写，配合 [tg-api](https://github.com/Aleeyoo/tg-api) 后端使用。
+
 ## 快速开始
 
 ```bash
@@ -9,36 +11,47 @@ npm install
 npm run dev
 ```
 
-打开 http://localhost:3000
+## 一键部署到 Cloudflare Pages
 
-## 配置
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Aleeyoo/photo-album)
 
-创建 `.env` 文件（参考 `.env.example`）：
+点击上方按钮，按提示操作即可完成部署。
 
-```
-VITE_API_URL=https://your-api.workers.dev
-VITE_CHANNEL=channel-name
-```
+部署后需在 Cloudflare 项目仪表板中设置环境变量：
 
-## 部署
+| 变量 | 说明 | 默认值 |
+|---|---|---|
+| `API_BASE_URL` | tg-api 地址 | https://your-api.workers.dev |
+
+无需重新构建，修改后刷新即生效。
+
+### 手动部署
 
 ```bash
 npm run build
+# 安装 Wrangler CLI
+npm install -g wrangler
+# 部署到 Cloudflare Pages
 wrangler pages deploy dist/
 ```
-
-在 Cloudflare Pages 仪表板中设置 `API_BASE_URL` 和 `CHANNEL` 环境变量，无需重新构建。
 
 ## 工作原理
 
 - 纯数据计算瀑布流布局，约 500 个 DOM 元素循环使用 — 平滑无限平移
 - Lightbox 使用 Motion One 弹性动画，打开时加载完整图片/视频
 - 右上角标签下拉筛选，数据来自 API
+- 路径参数驱动：`/频道名` 浏览频道，`/频道名/标签` 按标签筛选
 
 ## 依赖
 
 - [Motion One](https://motion.dev/) — lightbox 动画
 - [Vite](https://vitejs.dev/) — 构建工具
+- [tg-api](https://github.com/Aleeyoo/tg-api) — 后端 API
+
+## 项目引用
+
+- 原始前端项目: [twitter-bookmarks-grid](https://github.com/destefanis/twitter-bookmarks-grid)
+- 后端 API 项目: [tg-api](https://github.com/Aleeyoo/tg-api)
 
 ## 许可
 

@@ -7,11 +7,10 @@ export async function fetchApiBaseUrl(): Promise<string> {
     const data = await res.json();
     return data.apiBaseUrl;
   } catch {
-    // Fallback: VITE_API_URL (build-time) or default
     if ((import.meta as any).env?.VITE_API_URL) {
       return (import.meta as any).env.VITE_API_URL;
     }
-    return "https://tg-api.aleeyoo.workers.dev";
+    throw new Error("API_BASE_URL not configured. Set API_BASE_URL env var in Cloudflare dashboard or VITE_API_URL in .env");
   }
 }
 
