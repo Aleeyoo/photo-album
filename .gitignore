@@ -27,6 +27,8 @@ dist/
 # Local tool data
 .codegraph/
 .claude/
+.codex/
+.pi/
 
 # Project specific
 bookmarks-data.json

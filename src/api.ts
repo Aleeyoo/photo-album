@@ -40,7 +40,7 @@ export interface NormalizedResult {
   tags: string[];
 }
 
-export function normalizePosts(raw: { posts: any[] }): NormalizedResult {
+export function normalizePosts(raw: { posts: any[] }, apiBaseUrl: string): NormalizedResult {
   const items: MediaItem[] = [];
   const tagSet = new Set<string>();
 
@@ -51,7 +51,7 @@ export function normalizePosts(raw: { posts: any[] }): NormalizedResult {
       if (block.type === "image" || block.type === "video") {
         items.push({
           type: block.type,
-          src: block.src,
+          src: `${apiBaseUrl}${block.proxy}`,
           width: block.width ?? 1,
           height: block.height ?? 1,
           title: post.title ?? "",
@@ -61,7 +61,7 @@ export function normalizePosts(raw: { posts: any[] }): NormalizedResult {
           blockId: block.id,
           isRound: block.isRound ?? false,
           poster: block.poster
-            ? block.poster.replace(/^\/static\/https:\/\//, "https://")
+            ? `${apiBaseUrl}${block.poster}`
             : undefined,
           post,
         });

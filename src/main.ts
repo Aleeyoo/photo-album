@@ -230,7 +230,7 @@ async function loadChannel(ch: string, apiBaseUrl: string, initialTag?: string) 
       cursor = posts[posts.length - 1].id;
     }
 
-    const { items, tags } = normalizePosts({ posts: allPosts });
+    const { items, tags } = normalizePosts({ posts: allPosts }, apiBaseUrl);
     allItems = items;
 
     console.log(`Loaded ${items.length} media items from ${allPosts.length} posts, ${tags.length} tags`);
